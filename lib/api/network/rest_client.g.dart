@@ -21,7 +21,7 @@ class _RestClient implements RestClient {
   @override
   Future<HomepageModel> getHomepage({
     String? searchQuery = 'all',
-    int? perPage = 50,
+    int? perPage = 100,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{

@@ -11,6 +11,6 @@ abstract class RestClient {
   @GET('search')
   Future<HomepageModel> getHomepage({
     @Query('query') String? searchQuery = 'all',
-    @Query('per_page') int? perPage = 50,
+    @Query('per_page') int? perPage = 100,
   });
 }

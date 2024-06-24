@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:untitled1/app/view/awsome_snackbar.dart';
@@ -38,39 +39,45 @@ class HomepageView extends ConsumerWidget {
         Expanded(
           child: asyncData.when(
             data: (data) {
-              return GridView.builder(
+              return MasonryGridView.builder(
+                shrinkWrap: true,
                 itemCount: data.photos!.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1,
-                  crossAxisSpacing: 4.0,
-                  mainAxisSpacing: 4.0,
-                ),
                 itemBuilder: (context, index) {
                   final photo = data.photos![index];
                   final isFavorite = favoriteNotifier.isFavorite(photo.id!);
+                  double ht = ((index % 4 + 2) * 80);
 
                   return GestureDetector(
                     onTap: () {
                       _showImageDialog(
                         context,
-                        photo.src!.large2x!,
+                        photo.src!.portrait!,
                         photo.id!,
                         isFavorite,
                         favoriteNotifier,
                         photo.src!.original!,
                       );
                     },
-                    child: CachedNetworkImage(
-                      imageUrl: photo.src!.original!,
-                      placeholder: (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                      fit: BoxFit.cover,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12.r),
+                        child: CachedNetworkImage(
+                          imageUrl: photo.src!.large!,
+                          height: ht,
+                          placeholder: (context, url) =>
+                              const Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   );
                 },
+                gridDelegate:
+                    const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2),
               );
             },
             error: (error, _) {
