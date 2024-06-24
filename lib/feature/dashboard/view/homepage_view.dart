@@ -1,9 +1,15 @@
 import 'dart:ui';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:untitled1/app/view/awsome_snackbar.dart';
+import 'package:untitled1/app/view/search_widget.dart';
+import 'package:untitled1/extensions/padding_extensions.dart';
 import 'package:untitled1/feature/dashboard/models/favorite_model.dart';
 import 'package:untitled1/feature/dashboard/provider/favorite_provider.dart';
 
@@ -25,6 +31,10 @@ class HomepageView extends ConsumerWidget {
 
     return Column(
       children: [
+        SearchButtonWidget(
+          onSearch: _onSearch,
+          border: 10.w,
+        ).pXY(15.w, 10.h),
         Expanded(
           child: asyncData.when(
             data: (data) {
@@ -150,11 +160,41 @@ class HomepageView extends ConsumerWidget {
                           ),
                         ),
                         Expanded(
-                          child: Container(
-                            height: 60.h,
-                            color: Colors.yellow,
-                            child: const Center(
-                              child: Text('Set As Wallpaper'),
+                          child: GestureDetector(
+                            onTap: () async {
+                              int location = WallpaperManager
+                                  .BOTH_SCREEN; // can be Home/Lock Screen
+                              var file = await DefaultCacheManager()
+                                  .getSingleFile(imageUrl);
+                              bool result =
+                                  await WallpaperManager.setWallpaperFromFile(
+                                file.path,
+                                location,
+                              );
+
+                              if (result) {
+                                awsomeSnackbar(
+                                  context,
+                                  'Success',
+                                  'Set as wallpaper successfully',
+                                  ContentType.success,
+                                );
+                              } else {
+                                awsomeSnackbar(
+                                  context,
+                                  'Error',
+                                  'Failed to set wallpaper',
+                                  ContentType.failure,
+                                );
+                              }
+                              Navigator.pop(context); // Dismiss the dialog
+                            },
+                            child: Container(
+                              height: 60.h,
+                              color: Colors.yellow,
+                              child: const Center(
+                                child: Text('Set As Wallpaper'),
+                              ),
                             ),
                           ),
                         ),
