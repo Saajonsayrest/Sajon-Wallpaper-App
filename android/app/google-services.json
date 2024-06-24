@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "883104796432",
+    "project_id": "vrit-c1e5e",
+    "storage_bucket": "vrit-c1e5e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:883104796432:android:93fdcf526f3126db739f95",
+        "android_client_info": {
+          "package_name": "com.example.untitled1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "883104796432-mrgqev5ggasbibep6miici3o3bjbve86.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.untitled1",
+            "certificate_hash": "2e8fe092cae80fb4c7666220a787a68e96e2cfc9"
+          }
+        },
+        {
+          "client_id": "883104796432-7djkksumrbi995f7s22duesjulm4nj24.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJcP0cmCGwsrN-NQswpIR139l0w-w2OrY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "883104796432-7djkksumrbi995f7s22duesjulm4nj24.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
