@@ -1,10 +1,12 @@
 import 'dart:ui';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:untitled1/app/view/awsome_snackbar.dart';
 import 'package:untitled1/app/view/search_widget.dart';
 import 'package:untitled1/app/view/set_wallpaper.dart';
 import 'package:untitled1/extensions/padding_extensions.dart';
@@ -138,10 +140,11 @@ class HomepageView extends ConsumerWidget {
                             onTap: () {
                               if (isFavorite) {
                                 favoriteNotifier.removeFromFavorites(photoId);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('Removed from favorites')),
-                                );
+                                awsomeSnackbar(
+                                    context,
+                                    'Success',
+                                    'Removed from favorites',
+                                    ContentType.failure);
                               } else {
                                 favoriteNotifier.addToFavorites(
                                   FavoriteModel(
@@ -150,11 +153,11 @@ class HomepageView extends ConsumerWidget {
                                     isFavorite: true,
                                   ),
                                 );
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('Added to favorites')),
-                                );
+
+                                awsomeSnackbar(context, 'Success',
+                                    'Added to favorites', ContentType.success);
                               }
+
                               Navigator.pop(context);
                             },
                             child: Container(
@@ -162,6 +165,7 @@ class HomepageView extends ConsumerWidget {
                               color: Colors.teal.shade300,
                               child: Center(
                                 child: Icon(
+                                  size: 35.w,
                                   isFavorite
                                       ? Icons.favorite
                                       : Icons.favorite_border,
