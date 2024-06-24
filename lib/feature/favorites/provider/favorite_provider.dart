@@ -42,4 +42,10 @@ class FavoriteNotifier extends StateNotifier<List<FavoriteModel>> {
   bool isFavorite(int id) {
     return state.any((model) => model.id == id);
   }
+
+  Future<void> clearFavorites() async {
+    state = [];
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('favorite_photos');
+  }
 }

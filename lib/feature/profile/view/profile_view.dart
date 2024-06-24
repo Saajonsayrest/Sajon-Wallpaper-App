@@ -278,6 +278,13 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
+  Future<void> clearSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('favorite_photos');
+
+    await prefs.clear();
+  }
+
   Future<void> _handleSignOut(BuildContext context) async {
     try {
       await AuthService().signOut();
@@ -287,10 +294,5 @@ class _ProfileViewState extends State<ProfileView> {
     } catch (e) {
       print('Error signing out: $e');
     }
-  }
-
-  Future<void> clearSharedPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
   }
 }
