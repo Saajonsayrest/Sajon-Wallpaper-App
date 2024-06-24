@@ -7,10 +7,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled1/app/view/decorations.dart';
 import 'package:untitled1/extensions/padding_extensions.dart';
-import 'package:untitled1/feature/google_auth_service/google_auth_service.dart';
+import 'package:untitled1/feature/sign_in/google_auth_service.dart';
 
 class ProfileView extends StatefulWidget {
-  const ProfileView({Key? key}) : super(key: key);
+  const ProfileView({super.key});
 
   static const routeName = '/profile';
 
