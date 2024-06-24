@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -109,28 +110,6 @@ class _ProfileViewState extends State<ProfileView> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.teal,
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-          padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
-          margin: EdgeInsets.only(bottom: 80.h),
-          child: Column(
-            children: [
-              Text(
-                'Hi,',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 35.sp, color: Colors.white),
-              ),
-              Text(
-                _user?.displayName?.toUpperCase() ?? 'No Name',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 25.sp, color: Colors.white),
-              )
-            ],
-          ),
-        ),
         Column(
           children: [
             GestureDetector(
@@ -141,12 +120,11 @@ class _ProfileViewState extends State<ProfileView> {
                     width: 300.w,
                     height: 300.h,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
+                      shape: BoxShape.circle,
                       color: Colors.grey[200],
                     ),
                     child: _imageFile != null
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
+                        ? ClipOval(
                             child: Image.file(
                               _imageFile!,
                               width: 300.w,
@@ -154,11 +132,14 @@ class _ProfileViewState extends State<ProfileView> {
                               fit: BoxFit.cover,
                             ),
                           )
-                        : const Center(
-                            child: Icon(
-                              Icons.person,
-                              size: 150,
-                              color: Colors.grey,
+                        : Center(
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/images/person.png',
+                                width: 300.w,
+                                height: 300.h,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                   ),
@@ -192,6 +173,24 @@ class _ProfileViewState extends State<ProfileView> {
               ).pT(10.h),
             ),
           ],
+        ).pB(50.h),
+        Container(
+          decoration: getShadowDecoration(),
+          padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 40.h),
+          child: Column(
+            children: [
+              Text(
+                _user?.displayName?.toUpperCase() ?? 'No Name',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 30.sp, color: Colors.teal),
+              ).pB(10.h),
+              Text(
+                _user?.email ?? 'No Name',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 22.sp, color: Colors.teal),
+              )
+            ],
+          ),
         ),
         GestureDetector(
           onTap: () {
@@ -199,15 +198,15 @@ class _ProfileViewState extends State<ProfileView> {
           },
           child: Container(
             height: 50.h,
-            width: 300.w,
+            width: 360.w,
             decoration: getShadowDecoration(color: Colors.red),
             child: Center(
               child: Text(
-                'Logout',
-                style: TextStyle(color: Colors.white, fontSize: 25.sp),
+                'LOGOUT',
+                style: TextStyle(color: Colors.white, fontSize: 24.sp),
               ),
             ),
-          ).pT(80.h),
+          ).pT(50.h),
         )
       ],
     );
@@ -217,24 +216,63 @@ class _ProfileViewState extends State<ProfileView> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm Logout'),
-          content: const Text('Are you sure you want to logout?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
             ),
-            TextButton(
-              child: const Text('Yes'),
-              onPressed: () async {
-                Navigator.of(context).pop(); // Close the dialog
-                await _handleSignOut(context);
-              },
+            backgroundColor: Colors.white,
+            elevation: 10.0,
+            title: const Text(
+              'Confirm Logout',
+              style: TextStyle(
+                fontSize: 22.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.teal,
+              ),
             ),
-          ],
+            content: Text(
+              'Are you sure you want to Logout?',
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.grey[800],
+              ),
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                child: const Text(
+                  'No',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ).pX(15.w),
+                onPressed: () => Navigator.of(context).pop(false),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                child: const Text(
+                  'Yes',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ).pX(15.w),
+                onPressed: () async {
+                  Navigator.of(context).pop(true);
+                  await _handleSignOut(context);
+                },
+              ),
+            ],
+          ),
         );
       },
     );

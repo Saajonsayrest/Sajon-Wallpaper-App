@@ -30,7 +30,7 @@ class RepositoryImpl implements Repository {
         return right(res);
       } else {
         return left(
-          const NetworkExceptions.defaultError(/*res.message!*/ "Sorry error"),
+          const NetworkExceptions.defaultError("No Image Found  :("),
         );
       }
     }, exceptionHandler: (dynamic e) {
