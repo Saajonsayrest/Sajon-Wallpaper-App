@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/app/view/bottom_nav_bar.dart';
-import 'package:untitled1/feature/dashboard/view/favorites_view.dart';
-import 'package:untitled1/feature/dashboard/view/homepage_view.dart';
-import 'package:untitled1/feature/dashboard/view/profile_view.dart';
+import 'package:untitled1/feature/favorites/view/favorites_view.dart';
+import 'package:untitled1/feature/homepage/view/homepage_view.dart';
+import 'package:untitled1/feature/profile/view/profile_view.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({Key? key}) : super(key: key);

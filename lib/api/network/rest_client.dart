@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:untitled1/feature/dashboard/models/homepage_model.dart';
+import 'package:untitled1/feature/homepage/models/homepage_model.dart';
 
 part 'rest_client.g.dart';
 

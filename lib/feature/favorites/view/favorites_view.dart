@@ -3,8 +3,10 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:untitled1/feature/dashboard/provider/favorite_provider.dart';
+import 'package:untitled1/app/view/set_wallpaper.dart';
+import 'package:untitled1/feature/favorites/provider/favorite_provider.dart';
 
 class FavoriteView extends ConsumerWidget {
   const FavoriteView({super.key});
@@ -18,27 +20,32 @@ class FavoriteView extends ConsumerWidget {
 
     return favoritePhotos.isEmpty
         ? const Center(child: Text('No favorite photos'))
-        : GridView.builder(
+        : MasonryGridView.builder(
             itemCount: favoritePhotos.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1,
-              crossAxisSpacing: 4.0,
-              mainAxisSpacing: 4.0,
-            ),
+            gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2),
             itemBuilder: (context, index) {
+              double ht = ((index % 4 + 3) * 80);
               final photo = favoritePhotos[index];
               return GestureDetector(
                 onTap: () {
                   _showImageDialog(context, photo.imageUrl, photo.id, true,
                       favoriteNotifier);
                 },
-                child: CachedNetworkImage(
-                  imageUrl: photo.imageUrl,
-                  placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                  fit: BoxFit.cover,
+                child: Padding(
+                  padding: EdgeInsets.all(6.w),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: CachedNetworkImage(
+                      imageUrl: photo.imageUrl,
+                      height: ht,
+                      placeholder: (context, url) =>
+                          const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               );
             },
@@ -103,15 +110,7 @@ class FavoriteView extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: Container(
-                            height: 60.h,
-                            color: Colors.yellow,
-                            child: const Center(
-                              child: Text('Set As Wallpaper'),
-                            ),
-                          ),
-                        ),
+                        SetWallpaperWidget(imageUrl)
                       ],
                     ),
                   ],

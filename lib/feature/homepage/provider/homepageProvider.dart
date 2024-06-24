@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:untitled1/api/error/network_exceptions.dart';
-import 'package:untitled1/feature/dashboard/models/homepage_model.dart';
-import 'package:untitled1/feature/dashboard/repository/repository.dart';
+import 'package:untitled1/feature/homepage/models/homepage_model.dart';
+import 'package:untitled1/feature/homepage/repository/repository.dart';
 
 final homepageProvider =
     StateNotifierProvider.autoDispose<UserProvider, AsyncValue<HomepageModel>>(

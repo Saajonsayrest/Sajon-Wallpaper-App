@@ -4,7 +4,7 @@ import 'package:untitled1/api/di/injection.dart';
 import 'package:untitled1/api/error/network_exceptions.dart';
 import 'package:untitled1/api/network/rest_client.dart';
 import 'package:untitled1/api/network/run_api_zoned.dart';
-import 'package:untitled1/feature/dashboard/models/homepage_model.dart';
+import 'package:untitled1/feature/homepage/models/homepage_model.dart';
 
 final repository = Provider<Repository>(
     (ref) => RepositoryImpl(api: ref.watch(restClientHomepageProvider)));

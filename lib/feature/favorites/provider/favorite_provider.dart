@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:untitled1/feature/dashboard/models/favorite_model.dart';
+import 'package:untitled1/feature/favorites/model/favorite_model.dart';
 
 final favoriteProvider =
     StateNotifierProvider<FavoriteNotifier, List<FavoriteModel>>(

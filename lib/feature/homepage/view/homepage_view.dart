@@ -1,18 +1,15 @@
 import 'dart:ui';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:untitled1/app/view/awsome_snackbar.dart';
 import 'package:untitled1/app/view/search_widget.dart';
+import 'package:untitled1/app/view/set_wallpaper.dart';
 import 'package:untitled1/extensions/padding_extensions.dart';
-import 'package:untitled1/feature/dashboard/models/favorite_model.dart';
-import 'package:untitled1/feature/dashboard/provider/favorite_provider.dart';
+import 'package:untitled1/feature/favorites/model/favorite_model.dart';
+import 'package:untitled1/feature/favorites/provider/favorite_provider.dart';
 
 import '../provider/homepageProvider.dart';
 
@@ -59,7 +56,7 @@ class HomepageView extends ConsumerWidget {
                       );
                     },
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(6.w),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12.r),
                         child: CachedNetworkImage(
@@ -96,6 +93,7 @@ class HomepageView extends ConsumerWidget {
 
   void _showImageDialog(BuildContext context, String imageUrl, int photoId,
       bool isFavorite, FavoriteNotifier favoriteNotifier, String originalUrl) {
+    bool _isLoading = false;
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -166,45 +164,7 @@ class HomepageView extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () async {
-                              int location = WallpaperManager
-                                  .BOTH_SCREEN; // can be Home/Lock Screen
-                              var file = await DefaultCacheManager()
-                                  .getSingleFile(imageUrl);
-                              bool result =
-                                  await WallpaperManager.setWallpaperFromFile(
-                                file.path,
-                                location,
-                              );
-
-                              if (result) {
-                                awsomeSnackbar(
-                                  context,
-                                  'Success',
-                                  'Set as wallpaper successfully',
-                                  ContentType.success,
-                                );
-                              } else {
-                                awsomeSnackbar(
-                                  context,
-                                  'Error',
-                                  'Failed to set wallpaper',
-                                  ContentType.failure,
-                                );
-                              }
-                              Navigator.pop(context); // Dismiss the dialog
-                            },
-                            child: Container(
-                              height: 60.h,
-                              color: Colors.yellow,
-                              child: const Center(
-                                child: Text('Set As Wallpaper'),
-                              ),
-                            ),
-                          ),
-                        ),
+                        SetWallpaperWidget(imageUrl)
                       ],
                     ),
                   ],

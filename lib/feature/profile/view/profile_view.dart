@@ -167,7 +167,7 @@ class _ProfileViewState extends State<ProfileView> {
                       width: 300.w,
                       height: 300.h,
                       color: Colors.black.withOpacity(0.5),
-                      child: Center(
+                      child: const Center(
                         child: CircularProgressIndicator(),
                       ),
                     ),
