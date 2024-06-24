@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,14 +21,23 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   File? _imageFile;
   bool _isLoadingImage = false;
+  User? _user;
 
   @override
   void initState() {
     super.initState();
+    _getUserData();
     _loadImageFromPreferences();
   }
 
-  void _loadImageFromPreferences() async {
+  void _getUserData() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    setState(() {
+      _user = currentUser;
+    });
+  }
+
+  Future<void> _loadImageFromPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? imagePath = prefs.getString('profile_image');
     if (imagePath != null) {
@@ -100,42 +110,85 @@ class _ProfileViewState extends State<ProfileView> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: 300.w,
-          height: 300.h,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: Colors.grey[200],
-            image: _imageFile != null
-                ? DecorationImage(
-                    image: FileImage(_imageFile!),
-                    fit: BoxFit.cover,
-                  )
-                : const DecorationImage(
-                    image: AssetImage('assets/images/person.png'),
-                    fit: BoxFit.cover,
-                  ),
+            color: Colors.teal,
+            borderRadius: BorderRadius.circular(10.r),
           ),
-          child: _imageFile == null
-              ? _isLoadingImage
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : null
-              : null,
-        ),
-        GestureDetector(
-          onTap: () => _showImagePicker(context),
-          child: Container(
-            height: 50.h,
-            width: 300.w,
-            decoration: getShadowDecoration(color: Colors.teal),
-            child: Center(
-              child: Text(
-                'Change Profile Image',
-                style: TextStyle(color: Colors.white, fontSize: 22.sp),
+          padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
+          margin: EdgeInsets.only(bottom: 80.h),
+          child: Column(
+            children: [
+              Text(
+                'Hi,',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 35.sp, color: Colors.white),
               ),
+              Text(
+                _user?.displayName?.toUpperCase() ?? 'No Name',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 25.sp, color: Colors.white),
+              )
+            ],
+          ),
+        ),
+        Column(
+          children: [
+            GestureDetector(
+              onTap: () => _showImagePicker(context),
+              child: Stack(
+                children: [
+                  Container(
+                    width: 300.w,
+                    height: 300.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.grey[200],
+                    ),
+                    child: _imageFile != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.file(
+                              _imageFile!,
+                              width: 300.w,
+                              height: 300.h,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : const Center(
+                            child: Icon(
+                              Icons.person,
+                              size: 150,
+                              color: Colors.grey,
+                            ),
+                          ),
+                  ),
+                  if (_isLoadingImage)
+                    Container(
+                      width: 300.w,
+                      height: 300.h,
+                      color: Colors.black.withOpacity(0.5),
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                ],
+              ),
+            ).pT(10.h),
+            GestureDetector(
+              onTap: () => _showImagePicker(context),
+              child: Container(
+                height: 50.h,
+                width: 300.w,
+                decoration: getShadowDecoration(color: Colors.teal),
+                child: Center(
+                  child: Text(
+                    'Edit Profile Image',
+                    style: TextStyle(color: Colors.white, fontSize: 22.sp),
+                  ),
+                ),
+              ).pT(10.h),
             ),
-          ).pT(10.h),
+          ],
         ),
         GestureDetector(
           onTap: () {
