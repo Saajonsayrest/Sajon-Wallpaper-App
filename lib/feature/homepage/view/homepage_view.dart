@@ -62,8 +62,11 @@ class HomepageView extends ConsumerWidget {
                         child: CachedNetworkImage(
                           imageUrl: photo.src!.large!,
                           height: ht,
-                          placeholder: (context, url) =>
-                              const Center(child: CircularProgressIndicator()),
+                          placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.teal),
+                          )),
                           errorWidget: (context, url, error) =>
                               const Icon(Icons.error),
                           fit: BoxFit.cover,
@@ -82,7 +85,9 @@ class HomepageView extends ConsumerWidget {
             },
             loading: () {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
+                ),
               );
             },
           ),
@@ -118,8 +123,10 @@ class HomepageView extends ConsumerWidget {
                       width: 400.w,
                       imageUrl: imageUrl,
                       fit: BoxFit.cover,
-                      placeholder: (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
+                      placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
+                      )),
                       errorWidget: (context, url, error) =>
                           const Center(child: Icon(Icons.error)),
                     ),

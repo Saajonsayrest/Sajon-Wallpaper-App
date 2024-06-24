@@ -39,8 +39,10 @@ class FavoriteView extends ConsumerWidget {
                     child: CachedNetworkImage(
                       imageUrl: photo.imageUrl,
                       height: ht,
-                      placeholder: (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
+                      placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
+                      )),
                       errorWidget: (context, url, error) =>
                           const Icon(Icons.error),
                       fit: BoxFit.cover,
@@ -78,8 +80,10 @@ class FavoriteView extends ConsumerWidget {
                       width: 400.w,
                       imageUrl: imageUrl,
                       fit: BoxFit.cover,
-                      placeholder: (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
+                      placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
+                      )),
                       errorWidget: (context, url, error) =>
                           const Center(child: Icon(Icons.error)),
                     ),

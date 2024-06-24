@@ -168,7 +168,10 @@ class _ProfileViewState extends State<ProfileView> {
                       height: 300.h,
                       color: Colors.black.withOpacity(0.5),
                       child: const Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.teal),
+                        ),
                       ),
                     ),
                 ],
